@@ -1,0 +1,558 @@
+Program-01: Write a program to search an element from a given array using Binary Search Algorithm.           
+Solution:
+Algorithm
+Start 
+Read the number of elements n in the array. 
+Read n elements into the array (sorted in ascending order). 
+Read the element key to search. 
+Initialize low = 0, high = n - 1. 
+Repeat until low <= high: 
+Calculate mid = (low + high) / 2. 
+If arr[mid] == key, element is found → go to Step 9. 
+If arr[mid] < key, set low = mid + 1. 
+Else set high = mid - 1. 
+If low > high, element not found. 
+Stop. 
+
+Source Code:
+#include <iostream>
+using namespace std;
+int main()
+{     int n, key;
+cout << "Enter number of elements: ";
+    cin >> n;
+      int arr[n];
+      cout << "Enter " << n << " elements in ascending order: ";
+    for (int i = 0; i < n; i++)
+        {     cin >> arr[i]; }
+    cout << "Enter element to search: ";
+    cin >> key;
+
+    int low = 0, high = n - 1, mid;
+       bool found = false;
+    while (low <= high) {
+                mid = (low + high) / 2;
+        if (arr[mid] == key) {
+                    cout << "Element found at position: " << mid + 1 << endl;
+        found = true;
+              break;
+        }
+        else if (arr[mid] < key) {
+                    low = mid + 1;
+        }
+        else {
+                    high = mid - 1;
+        }
+    }
+    if (!found) {
+  cout << "Element not found in the array." << endl;
+    }
+    return 0;
+}
+OUTPUT:
+
+
+Program-02: Write a program to find maximum and minimum numbers from a given array using Divide and Conquer method.
+Solution:
+Algorithm
+Start 
+Read the number of elements n in the array. 
+Read n elements into the array. 
+Call the function findMinMax(arr, low, high) which: 
+If low == high, return (arr[low], arr[low]) as both min and max. 
+If high == low + 1, compare the two elements and return min and max accordingly. 
+Otherwise, find the middle index mid = (low + high) / 2. 
+Recursively find min and max in left half and right half. 
+Compare results from both halves to get overall min and max. 
+Display the minimum and maximum values. 
+Stop. 
+Source Code:
+#include <iostream>
+using namespace std;
+struct Pair {
+       int min;
+         int max;
+};
+Pair findMinMax(int arr[], int low, int high) {
+    Pair result, left, right;
+       if (low == high)
+ {     result.min = arr[low];
+        result.max = arr[low];
+          return result;
+    }
+         if (high == low + 1) 
+{     if (arr[low] < arr[high]) 
+{     result.min = arr[low];
+       result.max = arr[high];
+   }
+        else {
+                    result.min = arr[high];
+                     result.max = arr[low];
+        }
+        return result;
+    }
+       int mid = (low + high) / 2;
+         left = findMinMax(arr, low, mid);
+           right = findMinMax(arr, mid + 1, high);
+
+     result.min = (left.min < right.min) ? left.min : right.min;
+     result.max = (left.max > right.max) ? left.max : right.max;
+    return result;
+}
+
+int main() {
+    int n;
+    cout << "Enter number of elements: ";
+    cin >> n;
+
+    int arr[n];
+     cout << "Enter " << n << " elements: ";
+       for (int i = 0; i < n; i++)
+        {        cin >> arr[i];    }
+
+
+    Pair ans = findMinMax(arr, 0, n - 1);
+    cout << "Minimum element: " << ans.min << endl;
+     cout << "Maximum element: " << ans.max << endl;
+
+    return 0;
+}
+
+OUTPUT:
+
+
+
+
+
+Program-03: Write a program to measure and compare the performances of Bubble Sort and Quick Sort algorithm using time function.  
+Solution:
+Algorithm
+Start 
+Read the number of elements n. 
+Read n elements into the array. 
+Copy the array into two separate arrays for Bubble Sort and Quick Sort. 
+Record the start time. 
+Sort the first array using Bubble Sort and record the end time. 
+Calculate Bubble Sort time. 
+Record the start time. 
+Sort the second array using Quick Sort and record the end time. 
+Calculate Quick Sort time. 
+Display both times for comparison. 
+Stop. 
+
+Source Code:   
+#include <iostream>
+#include <ctime>
+using namespace std;
+void bubbleSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++)
+        for (int j = 0; j < n - i - 1; j++)
+            if (arr[j] > arr[j + 1])
+                swap(arr[j], arr[j + 1]);
+}
+
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high], i = low - 1;
+    for (int j = low; j < high; j++) {
+        if (arr[j] <= pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+int main() {
+    int n;
+    cin >> n;
+    int arr1[n], arr2[n];
+    for (int i = 0; i < n; i++) {
+        cin >> arr1[i];
+        arr2[i] = arr1[i];
+    }
+    clock_t start, end;
+    double bubble_time, quick_time;
+    start = clock();
+    bubbleSort(arr1, n);
+    end = clock();
+    bubble_time = double(end - start) / CLOCKS_PER_SEC;
+    start = clock();
+    quickSort(arr2, 0, n - 1);
+    end = clock();
+    quick_time = double(end - start) / CLOCKS_PER_SEC;
+
+    cout << "Bubble Sort Time: " << bubble_time << " seconds\n";
+    cout << "Quick Sort Time: " << quick_time << " seconds\n";
+}
+OUTPUT:
+
+Program-04: Write a program to solve the Fractional Knapsack problem using greedy method.  
+            
+Solution:
+Algorithm
+Start 
+Read the number of items n and knapsack capacity. 
+Read weights and values of each item. 
+Calculate value per weight ratio for each item. 
+Sort items by ratio decreasing. 
+Add items fully or fractionally to maximize profit until capacity is full. 
+Display total profit. 
+Stop. 
+Source Code:   
+#include <iostream>
+#include <algorithm>
+using namespace std;
+struct Item {
+     int weight, value;
+      double ratio;
+};
+bool cmp(Item a, Item b) 
+{  return a.ratio > b.ratio;   }
+int main() {
+     int n, capacity;
+      cin >> n >> capacity;     Item items[n];
+          for (int i = 0; i < n; i++) {
+                    cin >> items[i].weight >> items[i].value;
+        items[i].ratio = (double)items[i].value / items[i].weight;
+    }
+    sort(items, items + n, cmp);
+    double totalValue = 0.0;
+     int remaining = capacity;
+    for (int i = 0; i < n && remaining > 0; i++) {
+            if (items[i].weight <= remaining) 
+{        totalValue += items[i].value;
+          remaining -= items[i].weight;
+  }
+        else 
+     {       totalValue += items[i].ratio * remaining;
+                 remaining = 0;
+       }
+    }
+    cout << "Maximum profit: " << totalValue << endl;
+}
+OUTPUT:
+
+
+
+
+Program-05: Write a program to find the minimum cost spanning tree using Prim's algorithm.
+Solution:
+Algorithm
+Start 
+Read number of vertices n. 
+Read the adjacency matrix representing graph edges and weights. 
+Initialize a set for MST vertices and an array for minimum edge costs. 
+Select the first vertex and mark it included. 
+Repeat until all vertices included: 
+Pick vertex with minimum edge cost not in MST. 
+Include it in MST. 
+Update edge costs for adjacent vertices. 
+Display MST edges and total cost. 
+Stop. 
+Source Code:   
+#include <iostream>
+#include <climits>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+     int graph[n][n];
+       for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+              cin >> graph[i][j];
+    int parent[n];
+    int key[n];
+    bool mstSet[n];
+
+    for (int i = 0; i < n; i++)
+    {   key[i] = INT_MAX;
+        mstSet[i] = false;
+    }
+    key[0] = 0;     parent[0] = -1;
+    for ( int count = 0; count < n - 1; count++ )
+        {   int min = INT_MAX, u;
+        for (int v = 0; v < n; v++)
+        if (!mstSet[v] && key[v] < min)
+        {   min = key[v];
+                  u = v;
+        }
+
+        mstSet[u] = true;
+                for (int v = 0; v < n; v++)
+                if (graph[u][v] && !mstSet[v] && graph[u][v] < key[v])
+        {     parent[v] = u;
+               key[v] = graph[u][v];
+        }
+    }
+    int totalCost = 0;
+    for (int i = 1; i < n; i++)
+    {
+            cout << parent[i] + 1 << " - " << i + 1 << " : " << graph[i][parent[i]] << endl;
+            totalCost += graph[i][parent[i]];
+    }
+    cout << "Total cost of MST: " << totalCost << endl;
+}
+OUTPUT:
+
+
+Program-06: Write a program to solve the single source shortest path problem using Dijkstra's algorithm.       
+Solution:
+Algorithm
+Start 
+Read number of vertices n. 
+Read adjacency matrix for the graph (weights). 
+Initialize distance array with infinity and source distance = 0. 
+Mark all vertices as unvisited. 
+While unvisited vertices remain: 
+Select vertex with minimum distance. 
+Update distances of adjacent vertices if shorter path found. 
+Display shortest distances. 
+Stop. 
+Source Code:   
+#include <iostream>
+ #include <climits>
+ using namespace std;
+
+int minDistance(int dist[],
+                 bool sptSet[],
+                 int n)
+                 {     int min = INT_MAX, min_index;
+                      for (int v = 0; v < n; v++)
+        if (!sptSet[v] && dist[v] <= min)
+               {   min = dist[v];      
+                 min_index = v;
+                }
+    return min_index;
+}
+int main() {
+    int n;
+    cin >> n;
+    int graph[n][n];
+    for (int i = 0; i < n; i++)
+    for (int j = 0; j < n; j++)
+            cin >> graph[i][j];
+     int dist[n];
+        bool sptSet[n];
+        for (int i = 0; i < n; i++) {
+               dist[i] = INT_MAX;
+                sptSet[i] = false;
+    }
+    dist[0] = 0;
+    for (int count = 0; count < n - 1; count++) {
+                int u = minDistance(dist, sptSet, n);
+    sptSet[u] = true;         for (int v = 0; v < n; v++)
+          if (!sptSet[v] && graph[u][v] && dist[u] != INT_MAX
+             && dist[u] + graph[u][v] < dist[v])
+                dist[v] = dist[u] + graph[u][v];
+    }
+    for (int i = 0; i < n; i++)
+        cout << "Vertex " << i + 1 << " Distance from Source: " << dist[i] << endl;
+}
+
+OUTPUT:
+
+Program-07: Write a program to solve the All Pairs Shortest Path problem using Floyd's algorithm.               
+Solution:
+Algorithm
+Start 
+Read number of vertices n. 
+Read adjacency matrix for the graph. 
+Initialize distance matrix same as adjacency matrix (0 for same vertex, else edge weight or INF). 
+For each vertex k, update distance[i][j] = min(distance[i][j], distance[i][k] + distance[k][j]). 
+After all iterations, distance matrix will have shortest paths between all pairs. 
+Display distance matrix. 
+Stop. 
+Source Code:   
+#include <iostream>
+using namespace std;
+#define INF 99999
+int main() {
+    int n;
+     cin >> n;
+      int dist[n][n];
+       for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
+                 cin >> dist[i][j];
+
+    for (int k = 0; k < n; k++)
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                if (dist[i][k] + dist[k][j] < dist[i][j])
+                     dist[i][j] = dist[i][k] + dist[k][j];
+   for (int i = 0; i < n; i++)
+      {    for (int j = 0; j < n; j++)
+             {   if (dist[i][j] == INF)
+                cout << "INF" << " ";
+     else
+       cout << dist[i][j] << " ";
+        }
+        cout << endl;
+     }
+}
+OUTPUT:
+
+
+
+
+Program-08: Write a program to solve the 4-queens problem using Backtracking method.
+Solution:
+Algorithm
+Start 
+Initialize a 4x4 chessboard with all 0s. 
+Place queens one by one in different columns using backtracking. 
+Before placing a queen, check if it's safe (no conflicts in row, column, diagonals). 
+If safe, place the queen and move to next column. 
+If no place found, backtrack. 
+If all queens placed, print solution. 
+Stop. 
+Source Code:   
+#include <iostream>
+ using namespace std;
+#define N 4
+
+bool isSafe(int board[N][N], int row, int col) {
+       for (int i = 0; i < col; i++)
+            if (board[row][i]) return false;
+  for (int i = row, j = col; i >= 0 && j >= 0; i--, j--)
+            if (board[i][j]) return false;
+  for (int i = row, j = col; i < N && j >= 0; i++, j--)
+        if (board[i][j])
+            return false;
+  return true;
+}
+bool solveNQUtil(int board[N][N], int col) {
+       if (col >= N) return true;
+         for (int i = 0; i < N; i++)
+          {    if (isSafe(board, i, col)) {
+            board[i][col] = 1;
+         if (solveNQUtil(board, col + 1))
+            return true;
+         board[i][col] = 0;
+        }
+    }
+    return false;
+}
+void printBoard(int board[N][N]) {
+    for (int i = 0; i < N; i++)
+        {         for (int j = 0; j < N; j++)
+                   cout << board[i][j] << " ";
+                    cout << endl;
+        }
+}
+int main()
+{     int board[N][N] = {0};
+      if (solveNQUtil(board, 0))
+            printBoard(board);
+       else
+         cout << "No solution exists" << endl;
+ }
+OUTPUT:
+
+Program-09: Write a program to solve the Sum of Subsets problem using Backtracking method.
+Solution:
+Algorithm
+Start 
+Read the number of elements n and the target sum sum. 
+Read array elements. 
+Use backtracking to find subsets that sum up to the target. 
+Print subsets if found. 
+Stop. 
+Source Code:   
+#include <iostream>
+using namespace std;
+
+int n, sum;
+int arr[20];
+int solution[20];
+bool sumOfSubsets(int currSum, int currIndex, int start)
+ {     if (currSum == sum)
+ {         for (int i = 0; i < currIndex; i++)
+       cout << solution[i] << " ";
+          cout << endl;
+           return true;
+    }
+    if (currSum > sum || start == n) return false;
+
+    bool res = false;
+
+    solution[currIndex] = arr[start];
+     res = sumOfSubsets(currSum + arr[start], currIndex + 1, start + 1) || res;
+         res = sumOfSubsets(currSum, currIndex, start + 1) || res;
+    return res;
+}
+
+int main()
+{     cin >> n >> sum;
+       for (int i = 0; i < n; i++)
+       cin >> arr[i];
+
+    if (!sumOfSubsets(0, 0, 0))
+      cout << "No subsets found" << endl;
+}
+
+OUTPUT:
+
+
+
+
+
+
+
+Program-10: Write a program to solve Graph Coloring problem using Backtracking method
+Solution:
+Algorithm
+Start 
+Read number of vertices n. 
+Read adjacency matrix of the graph. 
+Read number of colors m. 
+Use backtracking to assign colors to vertices such that no two adjacent vertices share the same color. 
+If coloring possible, print color assignment. 
+Else print no solution. 
+Stop. 
+Source Code:   
+#include <iostream>
+ using namespace std;
+int n, m;
+int graph[20][20];
+int color[20];
+bool isSafe(int v, int c)
+       {  for (int i = 0; i < n; i++)
+           if (graph[v][i] && color[i] == c)
+                return false;
+                return true;
+    }
+bool graphColoring(int v)
+      {     if (v == n) return true;
+    for (int c = 1; c <= m; c++)
+        {    if (isSafe(v, c))
+              {     color[v] = c;
+          if (graphColoring(v + 1))
+               return true;
+          color[v] = 0;
+        }
+    }
+    return false;
+}
+int main()
+{    cin >> n;
+     for (int i = 0; i < n; i++)
+     for (int j = 0; j < n; j++)
+        cin >> graph[i][j];
+        cin >> m;
+    if (graphColoring(0))
+        {      for (int i = 0; i < n; i++)
+               cout << "Vertex " << i + 1 << " ---> Color " << color[i] << endl;
+       }
+    else
+        {        cout << "No solution exists" << endl;     }
+}
+OUTPUT:
+
