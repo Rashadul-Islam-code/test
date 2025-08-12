@@ -1,0 +1,783 @@
+   INDEX
+SL 
+             QUESTIONS  NAME
+PAGE 
+DATE
+
+
+Consider the Bank database, which consists of the following tables, where the primary keys are underlined. 
+  
+Branch (BranchName, BranchCity, Assets) Customer (CustomerID, 
+CustomerName, CustomerStreet, CustomerCity) 
+Account (AccountNumber, BranchName, Balance) 
+Loan (LoanNumber, BranchName, Amount)  
+Depositor (CustomerID, AccountNumber)  
+Borrower (CustomerID, LoanNumber) 
+ 
+ Write SQL queries for the following requirements. 
+Retrieve distinct customers who have either an account or a loan. 
+Retrieve the branch with the maximum number of accounts. 
+Find the maximum loan amount issued in each branch. 
+Find customers whose names start with 'A'.
+4-8
+
+
+
+
+Consider the Employee database, which consists of the following tables, where the primary keys are underlined. 
+  
+employee (EmployeeID, EmployeeName, Street, City) works (EmployeeID, CompanyName, Salary)  company (CompanyName, City)  manages (EmployeeID, ManagerID) 
+ 
+Write SQL queries for the following requirements.  
+Find the company that has the most employees.  
+Find employees who do not have a manager. iii. 	Find the second-highest salary among employees. 
+iv. 	Find all employees who live in Dhaka city, but their company is not in Dhaka.    
+8-11
+
+
+
+
+Consider the University database consisting of the following tables, where the primary keys are underlined.  
+ 
+Student (StudentID, StudentName, DOB, Gender, Address, Phone, 
+Email, DepartmentID) 
+Department (DepartmentID, DepartmentName, HeadOfDept, 
+FacultyCount) 
+Course (CourseID, CourseName, Credits, DepartmentID)  
+Faculty (FacultyID, FacultyMemberName, Designation, Email, Phone, DepartmentID) 
+Enrollment (EnrollmentID, StudentID, CourseID, Semester, Grade) Classroom (RoomNumber, Building, Capacity) 
+ 
+Write down the SQL expressions for the following queries:   
+Find the department with the highest number of students.  
+II. Retrieve students who have taken more than 3 courses. 
+III. Find students who have taken at least one course and got an 'F'. 
+IV. Find the total number of students enrolled in each course.
+12-16
+
+
+
+
+Consider the Bank database, which consists of the following tables where the primary keys are underlined.  
+ 
+Branch (BranchName, BranchCity, Assets) 
+Customer (CustomerID, CustomerName,CustomerStreet, 
+CustomerCity) 
+Saving Account (AccountNumber, BranchName, Balance) 
+Loan (LoanNumber, BranchName, Amount) 
+Depositor (CustomerID, Account Number) 
+Borrower (CustomerID, LoanNumber) 
+ 
+Write down the SQL expressions for the following queries:  
+Delete all loan amount between 5000/- and 15000/-. 
+Find branches that have no accounts.  
+Find branches where total loan amount is greater than 50,000.  
+Deduct 3% service charge from saving account balance that have both loan and a saving account other wise deduct 5% service charge from saving account balance. 
+
+
+17-19
+
+
+
+
+Consider the Employee database, which consists of the following tables where the primary keys are underlined. 
+ 
+employee (EmployeeID, EmployeeName, Street, City) works (EmployeeID, CompanyName, Salary) company (CompanyName, City) manages (EmployeeID, ManagerID) 
+ 
+Write down the SQL expressions for the following queries:  
+Find companies with more than 5 employees. 
+Give all employees of First Bank Corporation a 20% salary raise. 
+Delete all records where an employee has no manager. 
+Assign a new manager to employees who currently have no manager.
+19-22
+
+
+
+
+Consider the employee database consisting of the following tables, where the primary keys are underlined.  
+ 
+  Employee (employee-name, street, city)  
+  Works (employee-name, company-name, salary)  
+  Company (company-name, city)  
+  Manages (employee-name, manages-name) 
+ 
+Write down the SQL expressions for the following queries:   
+i. 	Find the names, cities and salaries of all employees who work for Pubali Bank Ltd. ii. 	Find the total salaries of each company. 
+iii. Add and record in the database using a form. iv. 	Display your result of query (a) on a report.  
+
+
+
+
+
+
+
+
+
+NAME OF THE PROBLEM- 1 
+
+Consider the Bank database, which consists of the following tables where the primary keys are underlined. 
+Introduction: 	
+DATABASE MANAGEMENT SYSTEM: 
+The database is usually a collection of user data that contain the information about one particular enterprise. A database management system consists of collection of information, data and a set of programs to access those data. 
+SCHEMA: 
+Branch (branch-name,brance-city,assets), 
+Customer (customer-name,customer-street,customer-city), 
+Loan(loan-number,branch-name,amount), 
+Borrower (customer-name,loan-number), 
+Account (accont-numer,brance-name,balance), 
+Depositor (customer-name,account number) 
+E-R DIAGRAM: 
+The entity relationship (E-R) data model is based on perception of real world that consists of a set of basis object called entities and relationship among these objects. It represents the overall logical structure of a database. The E-R data model of the database for the banking enterprise is shown fig-1: 
+
+
+Creation of Databases SQL Command:  
+ 
+CREATE DATABASE bank;  
+Creation of Table under bank database:  
+
+CREATE TABLE Branch ( 
+    BranchName VARCHAR(255) PRIMARY KEY, 
+    BranchCity VARCHAR(255), 
+    Assets DECIMAL(18, 2) 
+); 
+
+CREATE TABLE Customer ( 
+    CustomerID INT PRIMARY KEY, 
+    CustomerName VARCHAR(255), 
+    CustomerStreet VARCHAR(255), 
+    CustomerCity VARCHAR(255) 
+); 
+ 
+CREATE TABLE Account ( 
+    AccountNumber INT PRIMARY KEY, 
+    BranchName VARCHAR(255), 
+    Balance DECIMAL(18, 2), 
+    FOREIGN KEY (BranchName) REFERENCES Branch(BranchName) 
+); 
+ 
+CREATE TABLE Loan ( 
+    LoanNumber INT PRIMARY KEY, 
+    BranchName VARCHAR(255), 
+    Amount DECIMAL(18, 2), 
+    FOREIGN KEY (BranchName) REFERENCES Branch(BranchName) 
+); 
+ 
+CREATE TABLE Depositor ( 
+    CustomerID INT, 
+    AccountNumber INT, 
+    PRIMARY KEY (CustomerID, AccountNumber), 
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID), 
+    FOREIGN KEY (AccountNumber) REFERENCES 
+Account(AccountNumber) 
+); 
+ 
+CREATE TABLE Borrower ( 
+    CustomerID INT, 
+    LoanNumber INT, 
+    PRIMARY KEY (CustomerID, LoanNumber), 
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID), 
+    FOREIGN KEY (LoanNumber) REFERENCES Loan(LoanNumber) 
+);  
+ 
+Insert Into person table:  
+  
+INSERT INTO Branch (BranchName, BranchCity, Assets) VALUES 
+('Motijheel Branch', 'Dhaka', 50000000.00),
+('Jamalpur Branch', 'Jamalpur', 75000000.00), 
+('Khulna Branch', 'Khulna', 30000000.00); 
+ 
+INSERT INTO Customer (CustomerID, CustomerName, 
+CustomerStreet, CustomerCity) VALUES 
+(101, 'Rahim', '123 Gulshan', 'Dhaka'), 
+(102, 'Karim', '456 Dhanmondi', 'Dhaka'), 
+(103, 'Sajid', '789 Kalurghat', 'Chittagong'), 
+(104, 'Fatima', '101 Jashore Road', 'Khulna'), (105, 'Amir', '202 Sylhet Bypass', 'Sylhet'); 
+ 
+INSERT INTO Account (AccountNumber, BranchName, Balance) 
+VALUES 
+(501, 'Motijheel Branch', 15000.50), 
+(502, 'Jamalpur Branch', 25000.75), 
+(503, 'Motijheel Branch', 500.00), 
+(504, 'Khulna Branch', 80000.00); 
+ 
+
+INSERT INTO Loan (LoanNumber, BranchName, Amount) VALUES 
+(901, 'Motijheel Branch', 50000.00), 
+(902, 'Jamalpur Branch', 15000.00), 
+(903, 'Motijheel Branch', 120000.00), 
+(904, 'Khulna Branch', 8000.00); 
+ 
+INSERT INTO Depositor (CustomerID, AccountNumber) VALUES 
+(101, 501), 
+(102, 502), 
+(103, 504); 
+INSERT INTO Borrower (CustomerID, LoanNumber) VALUES 
+(101, 901), 
+(102, 902), 
+(104, 903);  
+  
+Query: 
+-- I. Retrieve distinct customers who have either an account or a loan. 
+SELECT DISTINCT C.CustomerID, C.CustomerName
+FROM Customer C
+LEFT JOIN Depositor D ON C.CustomerID = D.CustomerID
+LEFT JOIN Borrower B ON C.CustomerID = B.CustomerID
+WHERE D.CustomerID IS NOT NULL OR B.CustomerID IS NOT NULL;
+
+Query Result: 
+
+
+
+John 
+
+Alice 
+
+Bob 
+
+ 
+-- II. Retrieve the branch with the maximum number of accounts. 
+SELECT BranchName 
+FROM Account 
+GROUP BY BranchName 
+ORDER BY COUNT(AccountNumber) DESC 
+LIMIT 1; 
+ 
+Query Result: 	 	 
+Branch_name 
+Perryridge 
+
+
+-- III. Find the maximum loan amount issued in each branch. 
+SELECT BranchName, MAX(Amount) AS MaximumLoanAmount 
+FROM Loan 
+GROUP BY BranchName;
+Query Result: 
+Branch_name 
+Max_loan ammount 
+Perryridge 
+2000000 
+Downtown 
+3200000 
+Mianus 
+2500000 
+
+
+-- IV. Find customers whose names start with 'A'. 
+SELECT * 
+FROM Customer 
+WHERE CustomerName LIKE 'A%';  
+Query Result: 
+Customer_ID 
+Customer_name 
+Customer_street 
+Customer_city 
+102 
+Alice 
+Park Ave 
+Brooklyn 
+
+ 
+ 
+
+                                 NAME OF THE PROBLEM- 2 
+Consider the Employee database, which consists of the following tables where the primary keys are underlined. 
+SCHEMA: 
+Employee (EmployeeID, EmployeeName, Street, City) 
+Works (EmployeeID, CompanyName, Salary) 
+Company (CompanyName, City) 
+Manages (EmployeeID, ManagerID) 
+E-R DIAGRAM: 
+The entity relationship (E-R) data model is based on perception of real world that consists of a set of basis object called entities and relationship among these objects. It represents the overall logical structure of a database. The E-R data model of the database for the banking enterprise is shown fig-2: 
+
+
+Creation of Databases SQL Command:  
+  
+CREATE DATABASE Employee;  
+Creation of a Table under the Employee database:  
+ 
+CREATE TABLE employee (
+    EmployeeID INT PRIMARY KEY,
+    EmployeeName VARCHAR(100),
+    Street VARCHAR(100),
+    City VARCHAR(50)
+);
+
+CREATE TABLE works (
+    EmployeeID INT,
+    CompanyName VARCHAR(100),
+    Salary DECIMAL(15, 2),
+    PRIMARY KEY (EmployeeID, CompanyName),
+    FOREIGN KEY (EmployeeID) REFERENCES employee(EmployeeID)
+)
+
+CREATE TABLE company (
+    CompanyName VARCHAR(100) PRIMARY KEY,
+    City VARCHAR(50)
+);
+
+CREATE TABLE manages (
+    EmployeeID INT,
+    ManagerID INT,
+    PRIMARY KEY (EmployeeID, ManagerID),
+    FOREIGN KEY (EmployeeID) REFERENCES employee(EmployeeID),
+    FOREIGN KEY (ManagerID) REFERENCES employee(EmployeeID)
+);  
+Insertion Into Branch Table:  
+  
+INSERT INTO employee (EmployeeID, EmployeeName, Street, City) VALUES 
+(1, 'Masud Rana', '101 Mirpur', 'Dhaka'), 
+(2, 'Limon Khan', '202 New Market', 'Khulna'), 
+(3, 'Sabina Yasmin', '303 Old Town', 'Dhaka'), 
+(4, 'Tanjil Ahmed', '404 Agrabad', 'Chittagong'), 
+(5, 'Sajid Alam', '505 Lalmatia', 'Dhaka'); 
+ 
+INSERT INTO works (EmployeeID, CompanyName, Salary) VALUES 
+(1, 'Pran RFL Group', 60000.00), (2, 'Square Group', 75000.00), 
+(3, 'Pran RFL Group', 50000.00), 
+(4, 'Square Group', 90000.00), 
+(5, 'Bashundhara Group', 65000.00); 
+INSERT INTO company (CompanyName, City) VALUES 
+('Pran RFL Group', 'Dhaka'), 
+('Square Group', 'Pabna'), 
+('Bashundhara Group', 'Sylhet'); 
+INSERT INTO manages (EmployeeID, ManagerID) VALUES 
+(2, 1), 
+(4, 2), 
+(5, 1); 
+Query: 
+-- I. Find the company that has the most employees. 
+SELECT CompanyName 
+FROM works 
+GROUP BY CompanyName 
+ORDER BY COUNT(EmployeeID) DESC 
+LIMIT 1; 
+ Query Result: 
+CompanyName 
+CodeWorks 
+
+-- II. Find employees who do not have a manager. 
+SELECT E.EmployeeID, E.EmployeeName 
+FROM employee E 
+LEFT JOIN manages M ON E.EmployeeID = M.EmployeeID 
+WHERE M.ManagerID IS NULL; 
+ Query Result: 
+EmployeeID 
+EmployeeName 
+E001 
+Anis Khan 
+E005 
+Akash Roy 
+
+
+-- III. Find the second-highest salary among employees. 
+SELECT MAX(Salary) 
+FROM works 
+WHERE Salary < (SELECT MAX(Salary) FROM works); 
+ Query Result: 
+SecondHighestSalary 
+70000 
+
+-- IV. Find all employees who live in Dhaka city, but their company is not in Dhaka. 
+SELECT E.EmployeeID, E.EmployeeName
+FROM employee E
+JOIN works W ON E.EmployeeID = W.EmployeeID
+JOIN company C ON W.CompanyName = C.CompanyName
+WHERE E.City = 'Dhaka'
+  AND C.City <> 'Dhaka'; 
+ Query Result: 
+EmployeeID 
+EmployeeName 
+E004 
+Bilal Hossain 
+
+NAME OF THE PROBLEM- 3 
+
+Consider the University database consisting of the following tables, where the primary keys are underlined. 
+SCHEMA: 
+Student (StudentID, StudentName, DOB, Gender, Address, Phone, Email, DepartmentID) Department (DepartmentID, DepartmentName, HeadOfDept, FacultyCount)
+Course (CourseID, CourseName, Credits, DepartmentID)
+Faculty (FacultyID, FacultyMemberName, Designation, Email, Phone, DepartmentID) Enrollment (EnrollmentID, StudentID, CourseID, Semester, Grade) 
+Classroom (RoomNumber, Building, Capacity)
+
+E-R DIAGRAM: 
+The entity relationship (E-R) data model is based on perception of real world that consists of a set of basis object called entities and relationship among these objects. It represents the overall logical structure of a database. The E-R data model of the database for the university is shown fig-3: 
+
+
+
+
+
+Creation of Databases SQL Command:  
+  
+CREATE DATABASE university;  
+  
+
+
+
+Creation of Table under university database:  
+  
+CREATE TABLE Student (
+    StudentID INT PRIMARY KEY,
+    StudentName VARCHAR(100),
+    DOB DATE,
+    Gender CHAR(1),
+    Address VARCHAR(200),
+    Phone VARCHAR(20),
+    Email VARCHAR(100),
+    DepartmentID INT,
+    FOREIGN KEY (DepartmentID) REFERENCES Department(DepartmentID)
+);
+
+CREATE TABLE Department (
+    DepartmentID INT PRIMARY KEY,
+    DepartmentName VARCHAR(100),
+    HeadOfDept VARCHAR(100),
+    FacultyCount INT   );
+CREATE TABLE Course (
+    CourseID INT PRIMARY KEY,
+    CourseName VARCHAR(100),
+    Credits INT,
+    DepartmentID INT,
+    FOREIGN KEY (DepartmentID) REFERENCES Department(DepartmentID)
+);
+
+CREATE TABLE Faculty (
+    FacultyID INT PRIMARY KEY,
+    FacultyMemberName VARCHAR(100),
+    Designation VARCHAR(50),
+    Email VARCHAR(100),
+    Phone VARCHAR(20),
+    DepartmentID INT,
+    FOREIGN KEY (DepartmentID) REFERENCES Department(DepartmentID)
+);
+
+CREATE TABLE Enrollment (
+    EnrollmentID INT PRIMARY KEY,
+    StudentID INT,
+    CourseID INT,
+    Semester VARCHAR(20),
+    Grade CHAR(2),
+    FOREIGN KEY (StudentID) REFERENCES Student(StudentID),
+    FOREIGN KEY (CourseID) REFERENCES Course(CourseID)
+);
+
+CREATE TABLE Classroom (
+    RoomNumber VARCHAR(10) PRIMARY KEY,
+    Building VARCHAR(100),
+    Capacity INT
+); 
+
+
+
+Insertion Into employee Table:  
+INSERT INTO Department (DepartmentID, DepartmentName, HeadOfDept, FacultyCount) VALUES
+(1, 'Computer Science', 'Dr. Rahman', 15),
+(2, 'Electrical Engineering', 'Dr. Karim', 12),
+(3, 'Business Administration', 'Dr. Ahmed', 10)
+
+INSERT INTO Student (StudentID, StudentName, DOB, Gender, Address, Phone, Email, DepartmentID) VALUES
+(101, 'Alice Khan', '2001-05-12', 'F', 'Dhaka', '01711111111', 'alice@example.com', 1),
+(102, 'Bob Hasan', '2000-09-21', 'M', 'Dhaka', '01722222222', 'bob@example.com', 2),
+(103, 'Charlie Islam', '1999-12-01', 'M', 'Chittagong', '01733333333', 'charlie@example.com', 1),
+(104, 'Dina Rahman', '2001-07-18', 'F', 'Khulna', '01744444444', 'dina@example.com', 3),
+(105, 'Ehsan Ali', '2002-03-03', 'M', 'Dhaka', '01755555555', 'ehsan@example.com', 1);
+
+INSERT INTO Course (CourseID, CourseName, Credits, DepartmentID) VALUES
+(201, 'Database Systems', 3, 1),
+(202, 'Data Structures', 4, 1),
+(203, 'Circuit Analysis', 3, 2),
+(204, 'Marketing Principles', 3, 3),
+(205, 'Algorithms', 4, 1);
+
+INSERT INTO Faculty (FacultyID, FacultyMemberName, Designation, Email, Phone, DepartmentID) VALUES
+(301, 'Dr. Rahman', 'Professor', 'rahman@university.com', '01811111111', 1),
+(302, 'Dr. Karim', 'Associate Professor', 'karim@university.com', '01822222222', 2),
+(303, 'Dr. Ahmed', 'Professor', 'ahmed@university.com', '01833333333', 3);
+
+INSERT INTO Enrollment (EnrollmentID, StudentID, CourseID, Semester, Grade) VALUES
+(401, 101, 201, 'Fall 2023', 'A'),
+(402, 101, 202, 'Fall 2023', 'B'),
+(403, 101, 205, 'Spring 2024', 'F'),
+(404, 102, 203, 'Fall 2023', 'B'),
+(405, 103, 201, 'Fall 2023', 'A'),
+(406, 103, 202, 'Spring 2024', 'B'),
+(407, 103, 205, 'Spring 2024', 'C'),
+(408, 103, 203, 'Fall 2023', 'A'),
+(409, 104, 204, 'Fall 2023', 'B'),
+(410, 105, 201, 'Fall 2023', 'A'),
+(411, 105, 202, 'Fall 2023', 'A');
+INSERT INTO Classroom (RoomNumber, Building, Capacity) VALUES
+('A101', 'Main Building', 60),
+('B202', 'Science Block', 40),
+('C303', 'Business Block', 50); 
+  Query: 
+-- I. Find the department with the highest number of students. 
+SELECT DepartmentID 
+FROM Student 
+GROUP BY DepartmentID 
+ORDER BY COUNT(StudentID) DESC 
+LIMIT 1; 
+ 
+-- II. Retrieve students who have taken more than 3 courses. 
+SELECT S.StudentID, S.StudentName
+FROM Student S
+JOIN Enrollment E ON S.StudentID = E.StudentID
+GROUP BY S.StudentID, S.StudentName
+HAVING COUNT(DISTINCT E.CourseID) > 3; 
+
+-- III. Find students who have taken at least one course and got an 'F'. 
+SELECT DISTINCT S.StudentID, S.StudentName
+FROM Student S
+JOIN Enrollment E ON S.StudentID = E.StudentID
+WHERE E.Grade = 'F';
+ 
+-- IV. Find the total number of students enrolled in each course. 
+SELECT C.CourseID, C.CourseName, COUNT(DISTINCT E.StudentID) AS TotalStudents
+FROM Course C
+LEFT JOIN Enrollment E ON C.CourseID = E.CourseID
+GROUP BY C.CourseID, C.CourseName;  
+  
+
+
+
+
+
+
+
+
+
+NAME OF THE PROBLEM- 4 
+Consider the Bank database, which consists of the following tables where the primary keys are underlined.
+
+SCHEMA: 
+Branch (BranchName, BranchCity, Assets)
+Customer (CustomerID, CustomerName,CustomerStreet, CustomerCity) 
+SavingAccount (AccountNumber, BranchName, Balance)
+Loan (LoanNumber, BranchName, Amount)
+Depositor (CustomerID, AccountNumber)
+Borrower (CustomerID, LoanNumber)
+
+
+Creation of Databases SQL Command:  
+  
+CREATE DATABASE bank;  
+ 
+Creation of Table under bank database: 
+CREATE TABLE Branch (
+    BranchName VARCHAR(50) PRIMARY KEY,
+    BranchCity VARCHAR(50),
+    Assets DECIMAL(15, 2)
+);
+
+CREATE TABLE Customer (
+    CustomerID INT PRIMARY KEY,
+    CustomerName VARCHAR(100),
+    CustomerStreet VARCHAR(100),
+    CustomerCity VARCHAR(50)
+);
+
+CREATE TABLE SavingAccount (
+    AccountNumber INT PRIMARY KEY,
+    BranchName VARCHAR(50),
+    Balance DECIMAL(15, 2),
+    FOREIGN KEY (BranchName) REFERENCES Branch(BranchName)
+);
+
+CREATE TABLE Loan (
+    LoanNumber INT PRIMARY KEY,
+    BranchName VARCHAR(50),
+    Amount DECIMAL(15, 2),
+    FOREIGN KEY (BranchName) REFERENCES Branch(BranchName)
+);
+
+CREATE TABLE Depositor (
+    CustomerID INT,
+    AccountNumber INT,
+    PRIMARY KEY (CustomerID, AccountNumber),
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
+    FOREIGN KEY (AccountNumber) REFERENCES SavingAccount(AccountNumber)
+);
+
+CREATE TABLE Borrower (
+    CustomerID INT,
+    LoanNumber INT,
+    PRIMARY KEY (CustomerID, LoanNumber),
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
+    FOREIGN KEY (LoanNumber) REFERENCES Loan(LoanNumber)
+);
+Insertion Into Branch Table:  
+ 
+INSERT INTO Branch VALUES
+('Banani', 'Dhaka', 1000000),
+('Gulshan', 'Dhaka', 2000000),
+('Agrabad', 'Chittagong', 1500000);
+
+INSERT INTO Customer VALUES
+(1, 'Alice Khan', 'Road 1', 'Dhaka'),
+(2, 'Bob Hasan', 'Road 2', 'Dhaka'),
+(3, 'Charlie Islam', 'Road 3', 'Chittagong'),
+(4, 'Dina Rahman', 'Road 4', 'Dhaka');
+
+INSERT INTO SavingAccount VALUES
+(101, 'Banani', 50000),
+(102, 'Banani', 30000),
+(103, 'Gulshan', 70000),
+(104, 'Agrabad', 40000);
+
+INSERT INTO Loan VALUES
+(201, 'Banani', 8000),
+(202, 'Banani', 60000),
+(203, 'Gulshan', 10000),
+(204, 'Agrabad', 70000);
+
+INSERT INTO Depositor VALUES
+(1, 101),
+(2, 102),
+(3, 103),
+(4, 104);
+
+INSERT INTO Borrower VALUES
+(1, 201),
+(1, 202),
+(2, 203),
+(3, 204);
+Query: 
+ -- I. Delete all loan amount between $5000/-$ and $15000/-$. 
+DELETE FROM Loan 
+WHERE Amount BETWEEN 5000 AND 15000; 
+ 
+-- II. Find branches that have no accounts. 
+SELECT B.BranchName
+FROM Branch B
+LEFT JOIN SavingAccount S ON B.BranchName = S.BranchName
+WHERE S.AccountNumber IS NULL;
+ 
+-- III. Find branches where total loan amount is greater than 50,000. 
+SELECT BranchName 
+FROM Loan 
+GROUP BY BranchName 
+HAVING SUM(Amount) > 50000; 
+ 
+-- IV. Deduct 3% service charge... 
+UPDATE SavingAccount
+SET Balance = Balance * 0.97
+WHERE AccountNumber IN (
+    SELECT D.AccountNumber
+    FROM Depositor D
+    JOIN Borrower B ON D.CustomerID = B.CustomerID
+);
+
+UPDATE SavingAccount
+SET Balance = Balance * 0.95
+WHERE AccountNumber NOT IN (
+    SELECT D.AccountNumber
+    FROM Depositor D
+    JOIN Borrower B ON D.CustomerID = B.CustomerID
+);  
+  
+
+
+NAME OF THE PROBLEM- 5: 
+Consider the Employee database, which consists of the following tables where the primary keys are underlined.
+
+SCHEMA: 
+employee (EmployeeID, EmployeeName, Street, City)
+works (EmployeeID, CompanyName, Salary)
+company (CompanyName, City)
+manages (EmployeeID, ManagerID)
+
+Creation of Databases SQL Command:  
+  
+CREATE DATABASE employee;  
+  
+Creation of Table under employee database:  
+  
+CREATE TABLE employee (
+    EmployeeID INT PRIMARY KEY,
+    EmployeeName VARCHAR(100),
+    Street VARCHAR(100),
+    City VARCHAR(50)
+);
+
+CREATE TABLE works (
+    EmployeeID INT,
+    CompanyName VARCHAR(100),
+    Salary DECIMAL(15, 2),
+    PRIMARY KEY (EmployeeID, CompanyName),
+    FOREIGN KEY (EmployeeID) REFERENCES employee(EmployeeID)
+);
+
+CREATE TABLE company (
+    CompanyName VARCHAR(100) PRIMARY KEY,
+    City VARCHAR(50)
+);
+
+CREATE TABLE manages (
+    EmployeeID INT,
+    ManagerID INT,
+    PRIMARY KEY (EmployeeID),
+    FOREIGN KEY (EmployeeID) REFERENCES employee(EmployeeID),
+    FOREIGN KEY (ManagerID) REFERENCES employee(EmployeeID)
+);
+
+
+Insertion Into employee Table:  
+  
+INSERT INTO company VALUES
+('First Bank Corporation', 'Dhaka'),
+('Tech Solutions', 'Chittagong'),
+('Global Finance', 'Dhaka');
+
+INSERT INTO employee VALUES
+(1, 'Alice Khan', 'Road 1', 'Dhaka'),
+(2, 'Bob Hasan', 'Road 2', 'Dhaka'),
+(3, 'Charlie Islam', 'Road 3', 'Chittagong'),
+(4, 'Dina Rahman', 'Road 4', 'Dhaka'),
+(5, 'Ehsan Ali', 'Road 5', 'Dhaka'),
+(6, 'Farhan Ahmed', 'Road 6', 'Chittagong'),
+(7, 'Gulzar Hossain', 'Road 7', 'Dhaka'),
+(8, 'Hena Akter', 'Road 8', 'Dhaka');
+
+INSERT INTO works VALUES
+(1, 'First Bank Corporation', 50000),
+(2, 'First Bank Corporation', 55000),
+(3, 'First Bank Corporation', 60000),
+(4, 'First Bank Corporation', 58000),
+(5, 'First Bank Corporation', 62000),
+(6, 'First Bank Corporation', 49000),
+(7, 'Tech Solutions', 70000),
+(8, 'Global Finance', 80000);
+
+INSERT INTO manages VALUES
+(1, 2),
+(2, 3),
+(3, NULL),
+(4, NULL),
+(5, 1),
+(6, 2),
+(7, 8),
+(8, NULL);
+ Query: 
+ -- I. Find companies with more than 5 employees. 
+SELECT CompanyName 
+FROM works 
+GROUP BY CompanyName 
+HAVING COUNT(EmployeeID) > 5; 
+
+-- II. Give all employees of IFIC Bank a 20% salary raise. 
+UPDATE works 
+SET Salary = Salary * 1.20 
+WHERE CompanyName = 'IFIC Bank'; 
+ 
+
+-- III. Delete all records where an employee has no manager. 
+DELETE FROM manages 
+WHERE ManagerID IS NULL; 
+ 
+-- IV. Assign a new manager to employees who currently have no manager. 
+UPDATE manages 
+SET ManagerID = 101 -- '101' is an example of a new manager 
+ID. 
+WHERE ManagerID IS NULL; 
+  
+  
+  
+  
