@@ -1,0 +1,477 @@
+Program-01: Write an assembly language program to convert a lower case letter to an upper case letter.
+Solution:  
+DATA SEGMENT
+MSG1 DB "ENTER A LOWERCASE LETTER: $"
+MSG2 DB 0AH,0DH, "IN UPPER CASE IT IS : " ; LINE FEED AND CARRIAGE
+MSG3 DB ? ,"$"
+ENDS 
+CODE SEGMENT
+ASSUME DS: DATA CS:CODE
+START:
+MOV AX, DATA
+MOV DS, AX
+LEA DX, MSG1
+MOV AH, 09H
+INT 21H
+MOV AH, 01H
+INT 21H
+MOV DL, AL
+SUB DL, 20H
+MOV MSG3, DL
+LEA DX, MSG2
+MOV AH, 09H
+INT 21H
+MOV AH, 4CH
+INT 21H
+END
+END START
+
+
+Result: 
+INPUT:-  ENTER A LOWERCASE LETTER: r
+OUTPUT:- IN UPPER CASE IT IS: R
+
+
+Program-02: Write an assembly language program to read a character. If it is ‘y’ or ‘Y’, 
+Display it; otherwise terminate the program. 
+
+Solution:  
+.MODEL SMALL
+.STACK 100H
+.DATA
+PROMPT DB 'ENTER THE CHARACTER : $'
+MSG_1  DB 'THE INPUT LETTER IS : $'
+MSG_2  DB 'THE INPUT CHARACTER IS NOT "Y" OR "y".$'
+
+.CODE
+MAIN PROC
+    MOV AX, @DATA
+    MOV DS, AX
+
+    LEA DX, PROMPT
+    MOV AH, 9
+    INT 21H
+
+    MOV AH, 1
+    INT 21H
+    MOV BL, AL   
+    
+    MOV AH, 2
+    MOV DL, 0DH
+    INT 21H
+    MOV DL, 0AH
+    INT 21H
+    CMP BL, 'Y'
+    JE @DISPLAY
+    CMP BL, 'y'
+    JE @DISPLAY
+    
+    LEA DX, MSG_2
+    MOV AH, 9
+    INT 21H
+    JMP @EXIT 
+    
+
+@DISPLAY:
+    LEA DX, MSG_1
+    MOV AH, 9
+    INT 21H
+    MOV AH, 2
+    MOV DL, BL
+    INT 21H
+
+@EXIT:
+    MOV AH, 4CH
+    INT 21H
+MAIN ENDP
+END MAIN
+Result: 
+INPUT:- ENTER THE CHSRACTER: Y
+OUTPUT:- THE INPUT LETTER IS: Y
+
+
+Program-03: Write an assembly language program to determine whether the number is even or odd.
+Solution:  
+.MODEL SMALL
+.STACK 100H
+.DATA
+MSG      DB "ENTER A NUMBER: $"
+EVENMSG  DB 0DH, 0AH, "THIS NUMBER IS EVEN $"
+ODDMSG   DB 0DH, 0AH, "THIS NUMBER IS ODD $"
+TOTAL    DB 0
+VALUE    DB 0
+.CODE
+MAIN PROC
+    MOV AX, @DATA
+    MOV DS, AX
+
+    MOV AH, 9
+    LEA DX, MSG
+    INT 21H
+
+READ:
+    MOV AH, 1        
+    INT 21H
+    CMP AL, 13       
+    JE ENDOFNUMBER
+
+    MOV VALUE, AL
+    SUB VALUE, 48    
+    MOV AL, TOTAL
+    MOV BL, 10
+    MUL BL        
+    ADD AL, VALUE
+    MOV TOTAL, AL
+    JMP READ
+
+ENDOFNUMBER:
+    MOV AL, TOTAL
+    RCR AL, 1      
+    JC ODD
+    MOV AH, 9
+    LEA DX, EVENMSG
+    INT 21H
+    JMP EXIT
+ODD:
+    MOV AH, 9
+    LEA DX, ODDMSG
+    INT 21H
+EXIT:
+    MOV AH, 4CH
+    INT 21H
+MAIN ENDP
+END MAIN
+Result:
+INPUT:- ENTER A NUMBER: 9
+OUTPUT:- THIS NUMBER IS ODD
+
+Program-04: Write an assembly language program to add two decimal numbers.
+Solution: 
+DATA SEGMENT
+    NUM1   DB ?
+    NUM2   DB ?
+    MSG1   DB 10,13,"ENTER FIRST NUMBER TO ADD : $"
+    MSG2   DB 10,13,"ENTER SECOND NUMBER TO ADD : $"
+    MSG3   DB 10,13,"RESULT OF ADDITION IS : $"
+DATA ENDS
+CODE SEGMENT
+ASSUME DS:DATA, CS:CODE
+START:
+    MOV AX, DATA
+    MOV DS, AX
+
+    LEA DX, MSG1
+    MOV AH, 9
+    INT 21H
+    MOV AH, 1
+    INT 21H
+    SUB AL, 30H
+    MOV NUM1, AL
+
+    LEA DX, MSG2
+    MOV AH, 9
+    INT 21H
+    MOV AH, 1
+    INT 21H
+    SUB AL, 30H
+    MOV NUM2, AL
+    MOV AL, NUM1
+    ADD AL, NUM2
+    MOV AH, 0
+    AAA                
+    ADD AH, 30H        
+    ADD AL, 30H        
+    LEA DX, MSG3
+    MOV AH, 9
+    INT 21H
+    CMP AH, '0'
+    JE PRINT_ONES
+    MOV DL, AH
+    MOV AH, 2
+    INT 21H
+PRINT_ONES:
+    MOV DL, AL
+    MOV AH, 2
+    INT 21H
+
+    MOV AH, 4CH
+    INT 21H
+CODE ENDS
+END START
+
+Result:
+INPUT: - ENTER FIRST NUMBER TO ADD: 5 
+                ENTER SECOND NUMBER TO ADD: 3
+OUTPUT: - RESULT OF ADDITION IS: 8
+
+Program-05: Write an assembly language program to input two numbers, compare them and display the smaller one.
+Solution:
+.MODEL SMALL
+.STACK 64
+.DATA
+    MSG1    DB 13,10,"Enter first number: $"
+    MSG2    DB 13,10,"Enter second number: $"
+    MSGSMALLER DB 13,10,"The smaller number is: $"
+
+.CODE
+Main:
+    MOV AX, @DATA
+    MOV DS, AX
+    MOV AH, 09h
+    MOV DX, OFFSET MSG1
+    INT 21h
+    MOV AH, 01h        
+    INT 21h
+    SUB AL, 30h      
+    MOV BH, AL       
+    
+    MOV AH, 09h
+    MOV DX, OFFSET MSG2
+    INT 21h
+    MOV AH, 01h
+    INT 21h
+    SUB AL, 30h
+    MOV BL, AL         
+
+    CMP BH, BL
+    JB FirstIsSmaller
+    JA SecondIsSmaller
+    MOV DL, BH
+    JMP PrintResult
+
+FirstIsSmaller:
+    MOV DL, BH
+    JMP PrintResult
+SecondIsSmaller:
+    MOV DL, BL
+PrintResult:
+    MOV AH, 09h
+    MOV DX, OFFSET MSGSMALLER
+    INT 21h
+    ADD DL, 30h       
+    MOV AH, 02h       
+    INT 21h
+Exit:
+    MOV AH, 4Ch
+    INT 21h
+END Main
+Result:
+INPUT:-  Enter first number: 8
+               Enter second number: 5
+OUTPUT:-  The smaller number is: 5
+
+Program-06: Write an assembly language program to find the largest element of array.
+Solution:
+.MODEL SMALL
+.STACK 100H
+.DATA
+    ARR DB 04H, 03H, 05H, 02H, 09H, 06H,
+    LAR DB ?
+.CODE
+START:
+    MOV AX, @DATA
+    MOV DS, AX
+    MOV CX, 5          
+    MOV SI, OFFSET ARR
+    MOV AL, [SI]      
+    DEC CX            
+    INC SI             
+
+UP:
+    CMP AL, [SI]
+    JNC NEXT           
+    MOV AL, [SI]       
+NEXT:
+    INC SI
+    LOOP UP
+    MOV LAR, AL        
+
+    
+
+
+    MOV DL, AL
+    ADD DL, 30H
+    MOV AH, 2
+    INT 21H
+
+   
+    MOV AH, 4CH
+    INT 21H
+END START
+
+Result:
+OUTPUT:- 9
+
+
+Program-07: Write an assembly language program to calculate the average of n numbers.
+Solution:
+.MODEL SMALL 
+.DATA 	
+VAL1 DB ? 
+NL1 DB 0AH, 0DH,'ENTER HOW MANY NO U WANT:','$' 
+NL2 DB 0AH, 0DH,'ENTER NO:','$' 
+NL3 DB 0AH, 0DH,'AVEARGE:','$' 
+.CODE 
+MAIN PROC 
+MOV AX,@DATA 
+MOV DS, AX 
+LEA DX, NL1 
+MOV AH, 09H 
+INT 21H 
+MOV AH, 01H 
+INT 21H 
+SUB AL, 30H 
+MOV CL, AL 
+MOV BL, AL 
+MOV AL, 00 
+MOV VAL1, AL 
+LBL1: 
+LEA DX, NL2 
+MOV AH, 09H 
+INT 21H 
+MOV AH, 01H 
+INT 21H 
+SUB AL, 30H 
+ADD AL, VAL1 
+MOV VAL1, AL
+LOOP LBL1 
+LBL2: 
+LEA DX, NL3 
+MOV AH, 09H 
+INT 21H 
+MOV AX, 00 
+MOV AL, VAL1 
+DIV BL 
+ADD AX, 3030H 
+MOV DX, AX 
+MOV AH, 02H 
+INT 21H 
+MOV AH, 4CH 
+INT 21H 
+MAIN ENDP 
+END MAIN 
+
+Result:
+Enter how many numbers: 3
+Enter number: 5
+Enter number: 6 
+Enter number: 4
+Average is: 5
+
+
+Program-08: Write an assembly language program to calculate the factorial of an integer number.
+Solution:
+DATA SEGMENT
+    NUM DB ?
+    FACT DB 1
+    RES DB 10 DUP ('$')
+    MSG1 DB "ENTER NUMBER : $"
+    MSG2 DB 0Dh, 0Ah, "RESULT : $"
+DATA ENDS
+CODE SEGMENT
+ASSUME DS:DATA, CS:CODE
+START:
+    MOV AX, DATA
+    MOV DS, AX
+    LEA DX, MSG1
+    MOV AH, 09H        
+    INT 21H
+    MOV AH, 01H
+    INT 21H
+    SUB AL, 30H
+    MOV NUM, AL
+    MOV AL, FACT
+    MOV CH, 0
+    MOV CL, NUM
+LABEL1:
+    MUL CL
+    LOOP LABEL1
+    LEA SI, RES
+    CALL HEX2DEC
+    LEA DX, MSG2
+    MOV AH, 09H
+    INT 21H
+    LEA DX, RES
+    MOV AH, 09H
+    INT 21H
+    MOV AH, 4CH
+    INT 21H
+CODE ENDS
+HEX2DEC PROC NEAR
+    MOV CX, 0
+    MOV BX, 10
+LOOP1:
+    MOV DX, 0
+    DIV BX
+    ADD DL, 30H
+    PUSH DX
+    INC CX
+    CMP AX, 9
+    JG LOOP1
+    ADD AL, 30H
+    MOV [SI], AL
+LOOP2:
+    POP AX
+    INC SI
+    MOV [SI], AL
+    LOOP LOOP2
+    RET
+HEX2DEC ENDP
+END START
+
+Result:
+INPUT:-  4
+OUTPUT:-   24
+
+
+
+Program-09: Write an assembly language program to accept a string from keyboard and display it in reverse order.
+Solution:
+.MODEL SMALL
+.STACK 32
+.DATA
+STR1 DB 0DH, 0AH, 'ENTER THE STRING :- $'
+STR2 DB 0DH, 0AH, 'YOUR REVERSED STRING IS :- $'
+NL   DB 0DH, 0AH, '$'
+.CODE
+START:
+    MOV AX, @DATA
+    MOV DS, AX
+
+    DISP:
+        LEA DX, STR1
+        MOV AH, 09H
+        INT 21H
+        MOV CX, 0        
+    READ:
+        MOV AH, 01H
+        INT 21H
+        CMP AL, 0DH       
+        JE DISPLAY
+        PUSH AX           
+        INC CX
+        JMP READ
+
+    DISPLAY:
+        LEA DX, STR2
+        MOV AH, 09H
+        INT 21H
+        LEA DX, NL
+        MOV AH, 09H
+        INT 21H
+    ANS:
+        MOV AH, 02H
+        POP AX             
+        MOV DL, AL
+        INT 21H
+        LOOP ANS
+
+    MOV AH, 4CH
+    INT 21H
+END START
+
+RESULT:-
+INPUT:-  ENTER THE STRING :- BANANA
+OUTPUT:- YOUR REVERSED STRING IS :- ANANAB
+
+
